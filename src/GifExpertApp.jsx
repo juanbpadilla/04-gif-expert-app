@@ -10,7 +10,21 @@ export const GifExpertApp = () => {
    */
   const [ categories, setCategories ] = useState([ 'One Punch', 'Dragon Ball' ]);
 
-  console.log(categories);
+  const onAddCategory = () => {
+    /**
+     * Hay muchas formas de agregar un nuevo elemento a un arreglo usando el hook useState.
+     * 1. crear una variable que contenga el nuevo arreglo y luego pasarlo al hook.
+     * const newCategories = [...categories, 'Valorant'];
+     * setCategories(newCategories)
+     * 
+     * 2. Usar el callback del hook useState.
+     * setCategories( cat => [ ...cat, 'Valorant' ] );
+     * 
+     * 3. Pasar el nuevo arreglo directamente al hook.
+     * setCategories([ ...categories, 'Valorant' ]);
+     */
+    setCategories([ 'Valorant', ...categories ]);
+  }
 
   return (
     <>
@@ -20,6 +34,7 @@ export const GifExpertApp = () => {
       {/* Input */}
 
       {/* Listado de Gif */}
+      <button onClick={ onAddCategory }>Agregar</button>
       <ol>
         { 
           categories.map( category => {
