@@ -14,9 +14,13 @@ export const GifExpertApp = () => {
 
   /**
    * newCategory es el valor que se obtiene del input.
-   * lo recibimos como argumento (value) en la función onAddCategory.
+   * ..lo recibimos como argumento (value) en la función onAddCategory.
    * 
    * Usamos un operador spread para hacer una copia del arreglo categories original. ...categories
+   * 
+   * Validamos si el nuevo elemento ya existe en el arreglo de categorías:
+   * ..categories.includes(newCategory) nos permite saber si el elemento "newCategory" ya existe en el arreglo.
+   * ..si el elemento ya existe, retornamos un return para que la función no haga nada.
    * 
    * HAY MUCHAS FORMAS DE AGREGAR UN NUEVO ELEMENTO A UN ARREGLO USANDO EL HOOK useState:
    * 
@@ -30,10 +34,13 @@ export const GifExpertApp = () => {
    * 3. Pasar el nuevo arreglo directamente al hook.
    *     setCategories([ ...categories, newCategory ]);
    * 
-   * En este caso, estamos usando la tercera opción.
-   * Pero pasando el nuevo elemento al inicio del arreglo y luego el resto de los elementos.
+   * ..En este caso, estamos usando la tercera opción.
+   * ..Pero pasando el nuevo elemento al inicio del arreglo y luego el resto de los elementos.
    */
   const onAddCategory = ( newCategory ) => {
+
+    if ( categories.includes(newCategory) ) return;
+
     setCategories([ newCategory, ...categories ]);
   }
 
