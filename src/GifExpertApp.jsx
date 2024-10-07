@@ -11,7 +11,7 @@ export const GifExpertApp = () => {
    * estos son pocisionales, es decir, el orden en el que se declaran es importante.
    * no se pueden llamar condicionalmente, ni dentro de un loop. Solo se pueden llamar en el nivel más alto de un componente.
    */
-  const [ categories, setCategories ] = useState([ 'One Punch', 'Dragon Ball' ]);
+  const [ categories, setCategories ] = useState([ 'One Punch' ]);
 
   /**
    * newCategory es el valor que se obtiene del input.
