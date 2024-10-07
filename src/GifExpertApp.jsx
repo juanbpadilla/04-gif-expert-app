@@ -13,24 +13,41 @@ export const GifExpertApp = () => {
   const [ categories, setCategories ] = useState([ 'One Punch', 'Dragon Ball' ]);
 
   /**
-   * Hay muchas formas de agregar un nuevo elemento a un arreglo usando el hook useState.
+   * newCategory es el valor que se obtiene del input.
+   * lo recibimos como argumento (value) en la función onAddCategory.
+   * 
+   * Usamos un operador spread para hacer una copia del arreglo categories original. ...categories
+   * 
+   * HAY MUCHAS FORMAS DE AGREGAR UN NUEVO ELEMENTO A UN ARREGLO USANDO EL HOOK useState:
+   * 
    * 1. crear una variable que contenga el nuevo arreglo y luego pasarlo al hook.
-   * const newCategories = [...categories, 'Valorant'];
-   * setCategories(newCategories)
+   *     const newCategories = [...categories, newCategory];
+   *     setCategories(newCategories)
    * 
    * 2. Usar el callback del hook useState.
-   * setCategories( cat => [ ...cat, 'Valorant' ] );
+   *     setCategories( cat => [ ...cat, newCategory ] );
    * 
    * 3. Pasar el nuevo arreglo directamente al hook.
-   * setCategories([ ...categories, 'Valorant' ]);
+   *     setCategories([ ...categories, newCategory ]);
+   * 
+   * En este caso, estamos usando la tercera opción.
+   * Pero pasando el nuevo elemento al inicio del arreglo y luego el resto de los elementos.
    */
-  // const onAddCategory = () => {
-  //   setCategories([ 'Valorant', ...categories ]);
-  // }
+  const onAddCategory = ( newCategory ) => {
+    setCategories([ newCategory, ...categories ]);
+  }
 
   /**
    * en <AddCategory setCategories={ setCategories } /> tenemos que pasar la función setCategories como propiedad.
    * esta función se encarga de agregar un nuevo elemento al arreglo de categorías.
+   * NOTA: (⚠️ Descartamos el uso de setCategories en el componente AddCategory)
+   * 
+   * ✅ En lugar de setCategories, podemos usar onNewCategory para que sea más descriptivo.
+   * onNewCategory es una función que se ejecuta para emitir el valor del input desde el componente AddCategory al componente GifExpertApp
+   * para que lo podamos agregar al arreglo de categorías con onAddCategory.
+   * 
+   * cuando una propiedad empieza con on, es porque es una función que se ejecuta cuando ocurre un evento.click, change, submit, etc.
+   * en lugar de setCategories, podemos usar onNewCategory para que sea más descriptivo.
    */
   return (
     <>
@@ -38,7 +55,10 @@ export const GifExpertApp = () => {
       <h1>GifExpertApp</h1>
 
       {/* Input */}
-      <AddCategory setCategories={ setCategories } />
+      <AddCategory 
+        // setCategories={ setCategories }
+        onNewCategory={ (value) => onAddCategory(value) }
+      />
 
       {/* Listado de Gif */}
       <ol>

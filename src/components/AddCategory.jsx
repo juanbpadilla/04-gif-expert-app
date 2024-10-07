@@ -7,15 +7,15 @@ import PropTypes from 'prop-types'
  * 
  * el componente AddCategory recibe un objeto con la propiedad setCategories.
  * esta propiedad es una función que se encarga de agregar un nuevo elemento al arreglo de categorías.
+ * NOTA: (⚠️ Descartamos el uso de setCategories en el componente AddCategory)
  * 
- * setCategories nos marca un error porque no está definido en el componente AddCategory.
- * para solucionar este error, debemos agregar setCategories como argumento de la función AddCategory.
- * con propTypes podemos definir las propiedades que recibe un componente.
+ * ✅ En lugar de setCategories, podemos usar onNewCategory para que sea más descriptivo.
+ * A diferencia de setCategories, onNewCategory es una función que se ejecuta cuando se agrega una nueva categoría.
  * 
  * @param {*} param0 
  * @returns 
  */
-export const AddCategory = ({ setCategories }) => {
+export const AddCategory = ({ onNewCategory }) => {
 
   const [ inputValue, setInputValue ] = useState('');
 
@@ -38,10 +38,18 @@ export const AddCategory = ({ setCategories }) => {
    * también podemos validar que el valor del input no esté vacío.
    * si el valor del input está vacío, retornamos un return para que la función no haga nada.
    * 
+   * value.trim() elimina los espacios en blanco al inicio y al final de la cadena.
+   * value.trim().length nos permite obtener la longitud de la cadena sin espacios en blanco.
+   * 
    * para agregar un nuevo elemento al arreglo, podemos usar el operador spread.
    * primero agregamos el nuevo valor y luego el resto de los elementos del arreglo.
    * prevState es el estado anterior del arreglo. (no necesariamente se debe llamar prevState)
    * setCategories(prevState => [ inputValue, ...prevState ]);
+   * NOTA: (⚠️ Descartamos el uso de setCategories en el componente AddCategory)
+   * 
+   * ✅ En lugar de setCategories, podemos usar onNewCategory para que sea más descriptivo.
+   * onNewCategory es una función que emite al componente padre GifExpertApp el valor del input
+   * para que este lo agregue al arreglo de categorías.
    * 
    * finalmente, limpiamos el input.
    * setInputValue('');
@@ -52,7 +60,8 @@ export const AddCategory = ({ setCategories }) => {
     event.preventDefault();
     if ( inputValue.trim().length <= 1 ) return;
 
-    setCategories(prevState => [ inputValue, ...prevState ]);
+    // setCategories(prevState => [ inputValue, ...prevState ]);
+    onNewCategory( inputValue.trim() );
     setInputValue('');
   }
 
@@ -79,5 +88,6 @@ export const AddCategory = ({ setCategories }) => {
 }
 
 AddCategory.propTypes = {
-  setCategories: PropTypes.func.isRequired
+  // setCategories: PropTypes.func.isRequired
+  onNewCategory: PropTypes.func.isRequired
 }
