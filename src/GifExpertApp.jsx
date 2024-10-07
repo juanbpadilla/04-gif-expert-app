@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { AddCategory } from "./components/AddCategory";
+import { GifGrid } from "./components/GifGrid";
 // import { AddCategory } from "./components/AddCategory";
 
 export const GifExpertApp = () => {
@@ -47,6 +48,7 @@ export const GifExpertApp = () => {
   /**
    * en <AddCategory setCategories={ setCategories } /> tenemos que pasar la función setCategories como propiedad.
    * esta función se encarga de agregar un nuevo elemento al arreglo de categorías.
+   * <AddCategory setCategories={ setCategories } />
    * NOTA: (⚠️ Descartamos el uso de setCategories en el componente AddCategory)
    * 
    * ✅ En lugar de setCategories, podemos usar onNewCategory para que sea más descriptivo.
@@ -58,24 +60,17 @@ export const GifExpertApp = () => {
    */
   return (
     <>
-      {/* título */}
       <h1>GifExpertApp</h1>
 
-      {/* Input */}
       <AddCategory 
-        // setCategories={ setCategories }
         onNewCategory={ (value) => onAddCategory(value) }
       />
 
-      {/* Listado de Gif */}
-      <ol>
-        { 
-          categories.map( category => {
-            return <li key={ category }>{ category }</li>
-          }) 
-        }
-      </ol>
-        {/* Gif Item */}
+      { 
+        categories.map( category => (
+            <GifGrid key={ category } category={ category } />
+          )) 
+      }
 
     </>
   )
