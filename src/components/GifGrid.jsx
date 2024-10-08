@@ -1,41 +1,83 @@
 import PropTypes from 'prop-types'
 import { getGifts } from '../helpers/getGifs';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 /**
- * en este componente vamos a mostrar los gifs de la categoría que se le pase por parámetro.
- * pero estamos incurriendo en un error, estamos llamando a la función gefGifts(category) fuera de un useEffect.
- * lo cual es una mala práctica, porque estamos haciendo una petición a la API de Giphy cada vez que se renderiza el componente.
- * lo correcto sería llamar a la función gefGifts(category) dentro de un useEffect.
+ * GifGrid recibe una categoría como propiedad y muestra los gifs de esa categoría.
  * 
- * useEffect es un hook que nos permite ejecutar efectos secundarios en componentes funcionales.
- * ..es decir, nos permite ejecutar código que no tiene que ver con la representación del componente.
+ * En este punto estamos usando el hook useState para manejar el estado de los gifs.
+ * ..el estado inicial de los gifs es un arreglo vacío.
+ * ..y usamos la función setImages para actualizar el estado de los gifs.
  * 
- * useEffect recibe dos argumentos: una función y un arreglo de dependencias.
- * ..la función que recibe useEffect se ejecuta cada vez que el componente se renderiza.
- * ..y el arreglo de dependencias es un arreglo que contiene las variables que useEffect debe observar.
- * si el arreglo de dependencias está vacío, la función que recibe useEffect se ejecuta solo una vez, cuando el componente se monta.
- * 
- * 
+ * Este componente retorna un fragmento con un título h3 y una lista ordenada (ol) de gifs.
+ * ..el título h3 muestra la categoría de los gifs. y la lista ordenada muestra los gifs de esa categoría.
  * 
  * @param {*} param0 
  * @returns 
  */
 export const GifGrid = ({ category }) => {
 
-  const [counter, setCounter] = useState(10)
+  const [images, setImages] = useState([])
 
+  /**
+   * getImages es una función que se encarga de obtener los gifs de la 
+   * ..categoría que se le pase por parámetro ( category ).
+   * ..es una función asíncrona que retorna una promesa.
+   * 
+   * @param {string} category
+   * @returns
+   */
+  const getImages = async() => {
+    const newImages = await getGifts(category);
+    setImages(newImages);
+  }
+
+  /**
+   * useEffect es un hook que nos permite ejecutar efectos secundarios en componentes funcionales.
+   * ..es decir, nos permite ejecutar código que no tiene que ver con la representación del componente.
+   * 
+   * useEffect recibe dos argumentos: una función y un arreglo de dependencias.
+   * ..la función que recibe useEffect se ejecuta cada vez que el componente se renderiza.
+   * ..y el arreglo de dependencias es un arreglo que contiene las variables que useEffect debe observar.
+   * si el arreglo de dependencias está vacío, la función que recibe useEffect se ejecuta solo una vez, cuando el componente se monta. 
+   * 
+   * ⚠️useEffect no puede ser async, por lo que no podemos hacer la petición a la API de Giphy dentro de useEffect.
+   *    🚫useEffect( async() => { const newImages = await getGifts(category); setImages(newImages) }, [] )
+   * 
+   * Hay varias formas de solucionar esto:
+   * 1. Usar then en la llamada a la función getGifts(category).
+   *   getGifts(category)
+   *    .then( newImages => setImages(newImages) );
+   * 
+   * 2. Crear una función asíncrona dentro de useEffect y llamarla.
+   *  const fetchGifts = async() => { const newImages = await getGifts(category); setImages(newImages) }
+   * 
+   * 3. ✅Crear una función asíncrona fuera de useEffect y llamarla.
+   *  const getImages = async() => { const newImages = await getGifts(category); setImages(newImages) }
+   */
   useEffect( () => {
-    getGifts(category);
+    getImages();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
 
   return (
     <>
       <h3>{ category }</h3>
-      <h5>{ counter }</h5>
-      <button onClick={() => setCounter(counter+1)}>+1</button>
+
+      <ol>
+        {/* images.map */}
+        {
+          // 1️⃣sin desestructurar
+          // images.map(image => ( <li key={ image.id }>{ image.title }</li> ))
+
+          // 2️⃣desestructurando
+          images.map(({ id, title }) => (
+            <li key={ id }>{ title }</li>
+          ))
+        }
+      </ol>
     </>
   )
 }
