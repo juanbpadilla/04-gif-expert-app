@@ -23,9 +23,22 @@ export const GifGrid = ({ category }) => {
 
   const { images, isLoading } = useFetchGifs( category );  
 
+  /**
+   * Retornamos un fragmento con el título de la categoría y un mensaje de carga.
+   * Si isLoading es true, mostramos un mensaje de carga.
+   * ..esto nos permite mostrar un mensaje de carga mientras se obtienen los gifs.
+   * 
+   * Luego mostramos un div con la clase "card-grid" que contiene los componentes GifItem.
+   * Usamos el método map para recorrer el arreglo de gifs y retornar un componente GifItem por cada gif.
+   * 
+   * @returns
+   */
   return (
     <>
       <h3>{ category }</h3>
+      {
+        isLoading && ( <h2>Cargando...</h2> )
+      }
 
       <div className='card-grid'>
         {

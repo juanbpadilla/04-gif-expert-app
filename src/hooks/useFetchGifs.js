@@ -16,6 +16,8 @@ import { getGifts } from '../helpers/getGifs'
  * ..y usamos la función setImages para actualizar el estado de los gifs 
  * ..y setIsLoading para actualizar el estado de carga.
  * 
+ * Si la categoría está vacía, setIsLoading se establece en false y se retorna sin hacer la petición a la API.
+ * 
  * @param {string} category 
  * @returns 
  */
@@ -47,7 +49,7 @@ export const useFetchGifs = ( category ) => {
    * ..es decir, nos permite ejecutar código que no tiene que ver con la representación del componente.
    * 
    * Antes de hacer la petición a la API de Giphy, validamos si la categoría está vacía.
-   * ..si la categoría está vacía, retornamos un return para que la función no haga nada.
+   * ..si la categoría está vacía, cambiamos el estado de isLoading a false y retornamos.
    * ..esto evita que se hagan peticiones innecesarias a la API, si la categoría está vacía.
    * 
    * ⚠️useEffect no puede ser async, por lo que no podemos hacer la petición a la API de Giphy dentro de useEffect.
@@ -65,7 +67,10 @@ export const useFetchGifs = ( category ) => {
    *  const getImages = async() => { const newImages = await getGifts(category); setImages(newImages) }
    */
   useEffect( () => {
-    if (category.trim() === '') return;
+    if (category.trim() === '') {
+      setIsLoading( false );
+      return;
+    };
     getImages();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
