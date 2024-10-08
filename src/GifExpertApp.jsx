@@ -1,8 +1,18 @@
 import { useState } from "react"
 import { AddCategory } from "./components/AddCategory";
 import { GifGrid } from "./components/GifGrid";
-// import { AddCategory } from "./components/AddCategory";
 
+/**
+ * GifExpertApp es el componente principal de la aplicación.
+ * ..este componente se encarga de mostrar el título de la aplicación y el componente AddCategory.
+ * ..y de mostrar los componentes GifGrid por cada categoría que se agregue.
+ * 
+ * En este punto estamos usando el hook useState para manejar el estado de las categorías.
+ * ..el estado inicial de las categorías es un arreglo con un elemento vacío.
+ * ..y usamos la función setCategories para actualizar el estado de las categorías.
+ * 
+ * @returns 
+ */
 export const GifExpertApp = () => {
 
   /**
