@@ -37,10 +37,9 @@ export const GifGrid = ({ category }) => {
    * useEffect es un hook que nos permite ejecutar efectos secundarios en componentes funcionales.
    * ..es decir, nos permite ejecutar código que no tiene que ver con la representación del componente.
    * 
-   * useEffect recibe dos argumentos: una función y un arreglo de dependencias.
-   * ..la función que recibe useEffect se ejecuta cada vez que el componente se renderiza.
-   * ..y el arreglo de dependencias es un arreglo que contiene las variables que useEffect debe observar.
-   * si el arreglo de dependencias está vacío, la función que recibe useEffect se ejecuta solo una vez, cuando el componente se monta. 
+   * Antes de hacer la petición a la API de Giphy, validamos si la categoría está vacía.
+   * ..si la categoría está vacía, retornamos un return para que la función no haga nada.
+   * ..esto evita que se hagan peticiones innecesarias a la API, si la categoría está vacía.
    * 
    * ⚠️useEffect no puede ser async, por lo que no podemos hacer la petición a la API de Giphy dentro de useEffect.
    *    🚫useEffect( async() => { const newImages = await getGifts(category); setImages(newImages) }, [] )
@@ -57,6 +56,7 @@ export const GifGrid = ({ category }) => {
    *  const getImages = async() => { const newImages = await getGifts(category); setImages(newImages) }
    */
   useEffect( () => {
+    if (category.trim() === '') return;
     getImages();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
