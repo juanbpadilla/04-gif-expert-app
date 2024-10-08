@@ -1,6 +1,8 @@
-import PropTypes from 'prop-types'
-import { getGifts } from '../helpers/getGifs';
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types'
+
+import { GifItem } from './GifItem';
+import { getGifts } from '../helpers/getGifs';
 
 
 /**
@@ -10,8 +12,10 @@ import { useEffect, useState } from 'react';
  * ..el estado inicial de los gifs es un arreglo vacío.
  * ..y usamos la función setImages para actualizar el estado de los gifs.
  * 
- * Este componente retorna un fragmento con un título h3 y una lista ordenada (ol) de gifs.
- * ..el título h3 muestra la categoría de los gifs. y la lista ordenada muestra los gifs de esa categoría.
+ * En este punto se hace uso del componente GifItem para mostrar los gifs.
+ * ..GifItem recibe como propiedad un gif con las propiedades id, title y url.
+ * ..usamos el operador spread para pasar todas las propiedades del gif como propiedades independientes.
+ * ..y este componente se encarga de mostrar la imagen y el título del gif.
  * 
  * @param {*} param0 
  * @returns 
@@ -66,18 +70,29 @@ export const GifGrid = ({ category }) => {
     <>
       <h3>{ category }</h3>
 
-      <ol>
-        {/* images.map */}
+      <div className='card-grid'>
         {
-          // 1️⃣sin desestructurar
-          // images.map(image => ( <li key={ image.id }>{ image.title }</li> ))
-
-          // 2️⃣desestructurando
-          images.map(({ id, title }) => (
-            <li key={ id }>{ title }</li>
+          /**
+           * images es un arreglo de gifs que se obtiene de la API de Giphy.
+           * ..usamos el método map para recorrer el arreglo de gifs y retornar un componente GifItem por cada gif.
+           * 
+           * GifItem recibe como propiedad un gif con las propiedades id, title y url.
+           * ..usamos el operador spread para pasar todas las propiedades del gif como propiedades independientes.
+           * ..a esto se le conoce como "propiedades dinámicas" o "esparcimiento de propiedades". { ...image }
+           * ..esto nos permite usar las propiedades del gif como propiedades independientes en el componente GifItem.
+           * { ...image } es equivalente a { id={ image.id } title={ image.title } url={ image.url } }
+           * 
+           * @param {*} image
+           * @returns
+           */
+          images.map(( image ) => (
+            <GifItem 
+              key={ image.id }
+              { ...image }
+            />
           ))
         }
-      </ol>
+      </div>
     </>
   )
 }
