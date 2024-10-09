@@ -18,7 +18,7 @@
  * @param {*} category 
  * @returns 
  */
-export const getGifts = async( category ) => {
+export const getGifs = async( category ) => {
 
   const apiKey = import.meta.env.VITE_APP_GIPHY_API_KEY;
   const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${category}&limit=10`;

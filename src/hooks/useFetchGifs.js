@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getGifts } from '../helpers/getGifs'
+import { getGifs } from '../helpers/getGifs'
 
 /**
  * useFetchGifs es un hook personalizado que se encarga de obtener los gifs de la categoría que se le pase por parámetro.
@@ -39,7 +39,7 @@ export const useFetchGifs = ( category ) => {
    * @returns
    */
   const getImages = async() => {
-    const newImages = await getGifts(category);
+    const newImages = await getGifs(category);
     setImages(newImages);
     setIsLoading( false );
   }
