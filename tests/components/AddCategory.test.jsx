@@ -21,9 +21,8 @@ describe('Pruebas en <AddCategory />', () => {
     const input = screen.getByRole('textbox');
 
     fireEvent.input( input, { target: { value: 'Saitama' } });
-
-    expect( input.value ).toBe('Saitama');
     // screen.debug();
+    expect( input.value ).toBe('Saitama');
 
   });
 
@@ -39,23 +38,71 @@ describe('Pruebas en <AddCategory />', () => {
    * fireEvent.submit recibe dos argumentos: el formulario y un objeto con el evento que queremos simular.
    * ..en este caso, queremos simular el evento submit, por lo que el objeto que pasamos es {}.
    * 
-   * Finalmente, comprobamos que el valor del input sea una cadena vacía.
+   * A continuación, comprobamos que el valor del input sea una cadena vacía.
+   * 
+   * También comprobamos que el evento onSubmit se haya llamado.
+   * ..para ello, usamos jest.fn() para crear una función simulada. ( onNewCategory )
+   * ..y pasamos esta función simulada como argumento al componente AddCategory.
+   * 
+   * toHaveBeenCalled se usa para comprobar si la función se ha llamado.
+   * 
+   * ..y comprobamos que la función simulada se haya llamado una vez.
+   * toHaveBeenCalledTimes(1) se usa para comprobar cuántas veces se ha llamado la función.
+   * 
+   * ..y comprobamos que la función simulada se haya llamado con el argumento pasado por parámetro. onNewCategory(inputValue)
+   * toHaveBeenLastCalledWith(inputValue) se usa para comprobar con qué argumentos se ha llamado la función la última vez.
+   * 
    */
   test('debe de llamar onNewCategory si el input tiene un valor', () => {
 
     const inputValue = 'Saitama';
-    // TODO: ???
+    const onNewCategory = jest.fn();
     
-    render( <AddCategory onNewCategory={ () => {} } /> );
+    render( <AddCategory onNewCategory={ onNewCategory } /> );
 
     const input = screen.getByRole('textbox');
     const form = screen.getByRole('form')
 
     fireEvent.input( input, { target: { value: inputValue } });
     fireEvent.submit( form );
-    expect( input.value ).toBe('');
     // screen.debug();
+    expect( input.value ).toBe('');
 
+    expect( onNewCategory ).toHaveBeenCalled();
+    expect( onNewCategory ).toHaveBeenCalledTimes( 1 );
+    expect( onNewCategory ).toHaveBeenLastCalledWith( inputValue );
+
+  });
+
+  /**
+   * Este test comprueba que no se llame al evento onSubmit si el input está vacío.
+   * 
+   * Para ello, renderizamos el componente AddCategory.
+   * Luego, obtenemos el formulario del componente AddCategory.
+   * 
+   * Para simular el envío del formulario, usamos fireEvent.submit.
+   * ..como en el test anterior.
+   * 
+   * También comprobamos que el evento onSubmit no se haya llamado.
+   * ..para ello, usamos jest.fn() para crear una función simulada. ( onNewCategory )
+   * ..y pasamos esta función simulada como argumento al componente AddCategory.
+   * 
+   * toHaveBeenCalled se usa para comprobar si la función se ha llamado.
+   * ..al negar toHaveBeenCalled, comprobamos que la función no se haya llamado.
+   * 
+   * La otra forma de comprobar si la función no se ha llamado es con toHaveBeenCalledTimes(0).
+   */
+  test('no debe de llamar el onNewCategory si el input esta vacío', () => {
+
+    const onNewCategory = jest.fn();    
+    render( <AddCategory onNewCategory={ onNewCategory } /> );
+
+    const form = screen.getByRole('form')
+    fireEvent.submit( form );
+
+    expect( onNewCategory ).not.toHaveBeenCalled();
+    // expect( onNewCategory ).toHaveBeenCalledTimes(0);
+    
   });
 
 })
